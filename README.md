@@ -52,3 +52,18 @@ if err != nil {
   panic(err)
 }
 ```
+
+##### Delete
+```go
+// delete single resource
+err = db.Delete("bank", "tom")
+if err != nil {
+  panic(err)
+}
+
+// delete entire collection
+err = db.Delete("bank", "")
+if err != nil {
+  panic(err)
+}
+```
