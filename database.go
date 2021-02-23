@@ -12,6 +12,7 @@ type Database struct {
 	Options Options
 }
 
+// New ...
 func New(path string, options *Options) (*Database, error) {
 	path = filepath.Clean(path)
 

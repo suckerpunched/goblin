@@ -6,7 +6,7 @@
 
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/suckerpunched/goblin.svg)](https://pkg.go.dev/github.com/suckerpunched/goblin)
-[![Go Report Card](https://goreportcard.com/badge/github.com/nanobox-io/golang-scribble)](https://goreportcard.com/report/github.com/nanobox-io/golang-scribble)
+[![Go Report Card](https://goreportcard.com/badge/github.com/nanobox-io/golang-scribble)](https://goreportcard.com/report/github.com/suckerpunched/goblin)
 --------
 
 short description here...

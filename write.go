@@ -7,7 +7,10 @@ import (
 
 // -------
 func (D *Database) Write(collection, resource string, v interface{}) error {
-	if err := notEmpty([]string{collection, resource}); err != nil {
+	if err := notEmpty(map[string]string{
+		"collection": collection,
+		"resource":   resource,
+	}); err != nil {
 		return err
 	}
 

@@ -2,6 +2,7 @@ package goblin
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -44,6 +45,8 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
+// ---------------------------
+
 func TestWriteReadGOB(t *testing.T) {
 	createDatabase("gob", "")
 	setupTestingData()
@@ -52,16 +55,16 @@ func TestWriteReadGOB(t *testing.T) {
 
 	err = db.Write(collection, "write-read", &x)
 	if err != nil {
-		t.Error("database write failed,", err)
+		t.Error("gob: database write failed,", err)
 	}
 
 	err = db.Read(collection, "write-read", &y)
 	if err != nil {
-		t.Error("database read failed,", err)
+		t.Error("gob: database read failed,", err)
 	}
 
 	if y.Size != x.Size {
-		t.Errorf("database flow failed, got: \"%d\", expected: \"%d\".", y.Size, x.Size)
+		t.Errorf("gob: database flow failed, got: \"%d\", expected: \"%d\".", y.Size, x.Size)
 	}
 }
 
@@ -73,16 +76,16 @@ func TestWriteReadCompressedGOB(t *testing.T) {
 
 	err = db.Write(collection, "write-read", &x)
 	if err != nil {
-		t.Error("database write failed,", err)
+		t.Error("gob-gzip: database write failed,", err)
 	}
 
 	err = db.Read(collection, "write-read", &y)
 	if err != nil {
-		t.Error("database read failed,", err)
+		t.Error("gob-gzip: database read failed,", err)
 	}
 
 	if y.Size != x.Size {
-		t.Errorf("database flow failed, got: \"%d\", expected: \"%d\".", y.Size, x.Size)
+		t.Errorf("gob-gzip: database flow failed, got: \"%d\", expected: \"%d\".", y.Size, x.Size)
 	}
 }
 
@@ -94,16 +97,16 @@ func TestWriteReadJSON(t *testing.T) {
 
 	err = db.Write(collection, "write-read", &x)
 	if err != nil {
-		t.Error("database write failed,", err)
+		t.Error("json: database write failed,", err)
 	}
 
 	err = db.Read(collection, "write-read", &y)
 	if err != nil {
-		t.Error("database read failed,", err)
+		t.Error("json: database read failed,", err)
 	}
 
 	if y.Size != x.Size {
-		t.Errorf("database flow failed, got: \"%d\", expected: \"%d\".", y.Size, x.Size)
+		t.Errorf("json: database flow failed, got: \"%d\", expected: \"%d\".", y.Size, x.Size)
 	}
 }
 
@@ -115,15 +118,38 @@ func TestWriteReadCompressedJSON(t *testing.T) {
 
 	err = db.Write(collection, "write-read", &x)
 	if err != nil {
-		t.Error("database write failed,", err)
+		t.Error("json-gzip: database write failed,", err)
 	}
 
 	err = db.Read(collection, "write-read", &y)
 	if err != nil {
-		t.Error("database read failed,", err)
+		t.Error("json-gzip: database read failed,", err)
 	}
 
 	if y.Size != x.Size {
-		t.Errorf("database flow failed, got: \"%d\", expected: \"%d\".", y.Size, x.Size)
+		t.Errorf("json-gzip: database flow failed, got: \"%d\", expected: \"%d\".", y.Size, x.Size)
+	}
+}
+
+// ---------------------------
+
+func TestDelete(t *testing.T) {
+	createDatabase("gob", "gzip")
+
+	var err error
+
+	err = db.Write(collection, "delete", &x)
+	if err != nil {
+		t.Error("database write failed,", err)
+	}
+
+	err = db.Delete(collection, "delete")
+	if err != nil {
+		t.Error("database delete failed,", err)
+	}
+
+	path := filepath.Join(db.Driver.Path, collection, "delete"+"."+db.Options.ext)
+	if _, err := stat(path); err == nil {
+		t.Error("database delete failed, expected file to not exists, file exists,", err)
 	}
 }

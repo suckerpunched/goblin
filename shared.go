@@ -1,11 +1,14 @@
 package goblin
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
-func notEmpty(params []string) error {
+func notEmpty(params map[string]string) error {
 	for s := range params {
 		if params[s] == "" {
-			return nil
+			return fmt.Errorf("unable to process, %s must be provided", s)
 		}
 	}
 	return nil
