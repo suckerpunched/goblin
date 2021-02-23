@@ -3,9 +3,9 @@ package goblin
 import (
 	"sync"
 
-	"./backend"
-	"./compression"
-	"./formatter"
+	"goblin/backend"
+	"goblin/compression"
+	"goblin/formatter"
 )
 
 // Driver ...
