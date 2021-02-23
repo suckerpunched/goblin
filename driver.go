@@ -71,35 +71,3 @@ func (D *Driver) obtainMutex(collection string) *sync.Mutex {
 
 	return m
 }
-
-// -------
-// func (D *Driver) Write(collection, resource string, v interface{}) {
-// 	if err := notEmpty([]string{collection, resource}); err != nil {
-// 		return err
-// 	}
-
-// 	mutex := D.Driver.obtainMutex(collection)
-// 	mutex.Lock()
-// 	defer mutex.Unlock()
-
-// 	dir := filepath.Join(D.Driver.Path, collection)
-// 	path := filepath.Join(dir, resource+"."+D.Options.ext)
-
-// 	if err := os.MkdirAll(dir, 0755); err != nil {
-// 		return err
-// 	}
-
-// 	b, _ := D.Formatter.Encode(v)
-
-// 	if D.Compression != nil {
-// 		b, _ = D.Compression.Compress(b)
-// 	}
-
-// 	return D.Backend.Write(path, b)
-// }
-
-// func (D *Driver) Read(path string, v interface{}) {
-// 	b, _ := D.Backend.Read(path)
-// 	b, _ = D.Compression.Decompress(b)
-// 	D.Formatter.Decode(b, v)
-// }
