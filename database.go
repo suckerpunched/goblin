@@ -4,6 +4,8 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+
+	"github.com/sirupsen/logrus"
 )
 
 // Database ...
@@ -36,8 +38,10 @@ func New(path string, options *Options) (*Database, error) {
 	driver := Driver{
 		Path:    path,
 		Engaged: make(map[string]*sync.Mutex),
+		Log:     logrus.New(),
 	}
 
+	driver.configureLogger()
 	driver.configureBackend(opts.Backend)
 	driver.configureCompression(opts.Compression)
 	driver.configureFormatter(opts.Format)
@@ -48,8 +52,10 @@ func New(path string, options *Options) (*Database, error) {
 	}
 
 	if _, err := os.Stat(path); err == nil {
+		database.Driver.Log.WithFields(logrus.Fields{"path": path}).Info("loading previous database")
 		return &database, nil
 	}
 
+	database.Driver.Log.WithFields(logrus.Fields{"path": path}).Info("creating new database")
 	return &database, os.MkdirAll(path, 0755)
 }

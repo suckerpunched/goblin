@@ -133,7 +133,7 @@ func TestWriteReadCompressedJSON(t *testing.T) {
 
 // ---------------------------
 
-func TestDelete(t *testing.T) {
+func TestDeleteResource(t *testing.T) {
 	createDatabase("gob", "gzip")
 
 	var err error
@@ -149,6 +149,27 @@ func TestDelete(t *testing.T) {
 	}
 
 	path := filepath.Join(db.Driver.Path, collection, "delete"+"."+db.Options.ext)
+	if _, err := stat(path); err == nil {
+		t.Error("database delete failed, expected file to not exists, file exists,", err)
+	}
+}
+
+func TestDeleteCollection(t *testing.T) {
+	createDatabase("gob", "gzip")
+
+	var err error
+
+	err = db.Write(collection, "delete", &x)
+	if err != nil {
+		t.Error("database write failed,", err)
+	}
+
+	err = db.Delete(collection, "")
+	if err != nil {
+		t.Error("database delete failed,", err)
+	}
+
+	path := filepath.Join(db.Driver.Path, collection)
 	if _, err := stat(path); err == nil {
 		t.Error("database delete failed, expected file to not exists, file exists,", err)
 	}
