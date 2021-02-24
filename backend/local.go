@@ -1,19 +1,19 @@
 package backend
 
 import (
-	"fmt"
 	"io/ioutil"
+	"os"
 )
 
 type Local struct{}
 
 func (l *Local) Write(path string, b []byte) error {
-	err := ioutil.WriteFile(path, b, 0644)
+	temp := path + ".temp"
+	err := ioutil.WriteFile(temp, b, 0644)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
-	return nil
+	return os.Rename(temp, path)
 }
 
 func (l *Local) Read(path string) ([]byte, error) {
