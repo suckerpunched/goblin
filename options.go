@@ -6,5 +6,12 @@ type Options struct {
 	Compression string
 	Backend     string
 
+	Log Logger
+
 	ext string
+}
+
+type Logger struct {
+	Level string
+	JSON  bool
 }

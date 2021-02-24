@@ -2,4 +2,6 @@ module github.com/suckerpunched/goblin
 
 go 1.15
 
-require github.com/sirupsen/logrus v1.8.0
+require (
+	github.com/rs/zerolog v1.20.0
+)

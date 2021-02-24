@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
-	"github.com/sirupsen/logrus"
 )
 
 // Delete ...
@@ -27,18 +25,18 @@ func (D *Database) Delete(collection, resource string) error {
 
 	switch fi, err := stat(path); {
 	case fi == nil, err != nil:
-		D.Driver.Log.Errorf("unable to find file or directory, %v", path)
+		D.Driver.Log.Error().Msgf("unable to find file or directory, %v", path)
 		return fmt.Errorf("unable to find file or directory, %v", path)
 
 	case fi.Mode().IsDir():
-		D.Driver.Log.WithFields(logrus.Fields{"collection": path}).Info("deleting collection")
+		D.Driver.Log.Info().Str("collection", path).Msg("deleting collection")
 		return os.RemoveAll(path)
 
 	case fi.Mode().IsRegular():
-		D.Driver.Log.WithFields(logrus.Fields{"resource": path}).Info("deleting resource")
+		D.Driver.Log.Info().Str("resource", path).Msg("deleting resource")
 		return os.RemoveAll(path)
 	}
 
-	D.Driver.Log.Error("unable to process delete")
+	D.Driver.Log.Error().Msg("unable to process delete")
 	return fmt.Errorf("unable to process delete")
 }

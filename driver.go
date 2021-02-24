@@ -4,7 +4,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/sirupsen/logrus"
+	"github.com/rs/zerolog"
 	"github.com/suckerpunched/goblin/backend"
 	"github.com/suckerpunched/goblin/compression"
 	"github.com/suckerpunched/goblin/formatter"
@@ -31,25 +31,45 @@ type Driver struct {
 		Decompress(b []byte) ([]byte, error)
 	}
 
-	Log *logrus.Logger
+	Log zerolog.Logger
 }
 
-func (D *Driver) configureLogger() {
-	// D.Log.SetFormatter(&logrus.JSONFormatter{})
-	D.Log.SetOutput(os.Stdout)
-	D.Log.SetLevel(logrus.DebugLevel)
+func (D *Driver) configureLogger(level string, formatted bool) {
+
+	if formatted {
+		D.Log = zerolog.New(os.Stderr).With().Timestamp().Logger()
+	} else {
+		D.Log = zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr}).With().Timestamp().Logger()
+	}
+
+	switch level {
+	case "panic":
+		zerolog.SetGlobalLevel(zerolog.PanicLevel)
+	case "fatal":
+		zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	case "error":
+		zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	case "warn":
+		zerolog.SetGlobalLevel(zerolog.WarnLevel)
+	case "info":
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	case "debug":
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	default:
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	}
 }
 
 func (D *Driver) configureFormatter(opt string) {
 	switch opt {
 	case "json":
-		D.Log.WithFields(logrus.Fields{"fmt": "json"}).Debug("formatter configured")
+		D.Log.Debug().Str("format", "json").Msg("formatter configured")
 		D.Formatter = &formatter.JSON{}
 	case "gob":
-		D.Log.WithFields(logrus.Fields{"fmt": "gob"}).Debug("formatter configured")
+		D.Log.Debug().Str("format", "gob").Msg("formatter configured")
 		D.Formatter = &formatter.GOB{}
 	default:
-		D.Log.WithFields(logrus.Fields{"fmt": "json"}).Debug("formatter configured")
+		D.Log.Debug().Str("format", "json").Msg("formatter configured")
 		D.Formatter = &formatter.JSON{}
 	}
 }
@@ -57,7 +77,7 @@ func (D *Driver) configureFormatter(opt string) {
 func (D *Driver) configureCompression(opt string) {
 	switch opt {
 	case "gzip":
-		D.Log.WithFields(logrus.Fields{"compression": "gzip"}).Debug("compression configured")
+		D.Log.Debug().Str("compression", "gzip").Msg("compression configured")
 		D.Compression = &compression.GZIP{}
 	default:
 		D.Compression = nil
@@ -67,16 +87,16 @@ func (D *Driver) configureCompression(opt string) {
 func (D *Driver) configureBackend(opt string) {
 	switch opt {
 	case "local":
-		D.Log.WithFields(logrus.Fields{"backend": "local"}).Debug("backend configured")
+		D.Log.Debug().Str("backend", "local").Msg("backend configured")
 		D.Backend = &backend.Local{}
 	default:
-		D.Log.WithFields(logrus.Fields{"backend": "local"}).Debug("backend configured")
+		D.Log.Debug().Str("backend", "local").Msg("backend configured")
 		D.Backend = &backend.Local{}
 	}
 }
 
 func (D *Driver) obtainMutex(collection string) *sync.Mutex {
-	D.Log.WithFields(logrus.Fields{"collection": collection}).Debug("obtaining mutex")
+	D.Log.Debug().Str("collection", collection).Msg("obtaining mutex")
 
 	D.Mutex.Lock()
 	defer D.Mutex.Unlock()
