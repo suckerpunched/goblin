@@ -3,10 +3,11 @@
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/suckerpunched/goblin)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/suckerpunched/goblin?label=Version)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/suckerpunched/goblin?label=Release)
-
+[![GitHub Actions](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fatrox%2Fsync-dotenv%2Fbadge&label=build&logo=none)](https://pkg.go.dev/github.com/suckerpunched/goblin)
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/suckerpunched/goblin.svg)](https://pkg.go.dev/github.com/suckerpunched/goblin)
 [![Go Report Card](https://goreportcard.com/badge/github.com/nanobox-io/golang-scribble)](https://goreportcard.com/report/github.com/suckerpunched/goblin)
+
 --------
 
 short description here...
