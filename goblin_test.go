@@ -29,6 +29,9 @@ func createDatabase(format string, compression string) error {
 	if db, err = New(database, &Options{
 		Format:      format,
 		Compression: compression,
+		Log: Logger{
+			Level: "debug",
+		},
 	}); err != nil {
 		return err
 	}

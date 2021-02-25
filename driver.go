@@ -56,7 +56,7 @@ func (D *Driver) configureLogger(level string, formatted bool) {
 	case "debug":
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	default:
-		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+		zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	}
 }
 
