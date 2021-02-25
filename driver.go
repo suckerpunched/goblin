@@ -63,13 +63,13 @@ func (D *Driver) configureLogger(level string, formatted bool) {
 func (D *Driver) configureFormatter(opt string) {
 	switch opt {
 	case "json":
-		D.Log.Debug().Str("format", "json").Msg("formatter configured")
+		D.Log.Debug().Str("format", "json").Msg("formatter")
 		D.Formatter = &formatter.JSON{}
 	case "gob":
-		D.Log.Debug().Str("format", "gob").Msg("formatter configured")
+		D.Log.Debug().Str("format", "gob").Msg("formatter")
 		D.Formatter = &formatter.GOB{}
 	default:
-		D.Log.Debug().Str("format", "json").Msg("formatter configured")
+		D.Log.Debug().Str("format", "json").Msg("formatter")
 		D.Formatter = &formatter.JSON{}
 	}
 }
@@ -77,7 +77,7 @@ func (D *Driver) configureFormatter(opt string) {
 func (D *Driver) configureCompression(opt string) {
 	switch opt {
 	case "gzip":
-		D.Log.Debug().Str("compression", "gzip").Msg("compression configured")
+		D.Log.Debug().Str("compression", "gzip").Msg("compression")
 		D.Compression = &compression.GZIP{}
 	default:
 		D.Compression = nil
@@ -87,10 +87,10 @@ func (D *Driver) configureCompression(opt string) {
 func (D *Driver) configureBackend(opt string) {
 	switch opt {
 	case "local":
-		D.Log.Debug().Str("backend", "local").Msg("backend configured")
+		D.Log.Debug().Str("backend", "local").Msg("backend")
 		D.Backend = &backend.Local{}
 	default:
-		D.Log.Debug().Str("backend", "local").Msg("backend configured")
+		D.Log.Debug().Str("backend", "local").Msg("backend")
 		D.Backend = &backend.Local{}
 	}
 }

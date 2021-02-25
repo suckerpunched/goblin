@@ -49,10 +49,10 @@ func New(path string, options *Options) (*Database, error) {
 	}
 
 	if _, err := os.Stat(path); err == nil {
-		database.Driver.Log.Info().Str("path", path).Msg("loading previous database")
+		database.Driver.Log.Info().Str("path", path).Msg("load")
 		return &database, nil
 	}
 
-	database.Driver.Log.Info().Str("path", path).Msg("creating new database")
+	database.Driver.Log.Info().Str("path", path).Msg("new")
 	return &database, os.MkdirAll(path, 0755)
 }

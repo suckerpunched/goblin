@@ -22,8 +22,11 @@ func (D *Database) Write(collection, resource string, v interface{}) error {
 	path := filepath.Join(dir, resource+"."+D.Options.ext)
 
 	if err := os.MkdirAll(dir, 0755); err != nil {
+		D.Driver.Log.Error().Msgf("unable to make directory, %v", dir)
 		return err
 	}
+
+	D.Driver.Log.Info().Str("path", path).Msgf("write")
 
 	b, _ := D.Driver.Formatter.Encode(v)
 

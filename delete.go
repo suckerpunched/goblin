@@ -29,11 +29,11 @@ func (D *Database) Delete(collection, resource string) error {
 		return fmt.Errorf("unable to find file or directory, %v", path)
 
 	case fi.Mode().IsDir():
-		D.Driver.Log.Info().Str("collection", path).Msg("deleting collection")
+		D.Driver.Log.Info().Str("collection", path).Msg("delete")
 		return os.RemoveAll(path)
 
 	case fi.Mode().IsRegular():
-		D.Driver.Log.Info().Str("resource", path).Msg("deleting resource")
+		D.Driver.Log.Info().Str("resource", path).Msg("delete")
 		return os.RemoveAll(path)
 	}
 

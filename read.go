@@ -14,8 +14,11 @@ func (D *Database) Read(collection, resource string, v interface{}) error {
 	path := filepath.Join(dir, resource+"."+D.Options.ext)
 
 	if _, err := stat(path); err != nil {
+		D.Driver.Log.Error().Msgf("unable to find file or directory, %v", path)
 		return err
 	}
+
+	D.Driver.Log.Info().Str("path", path).Msgf("read")
 
 	b, _ := D.Driver.Backend.Read(path)
 
